@@ -1,11 +1,22 @@
+import { GetStaticProps } from 'next'
+
 import Image from "next/image"
 import Link from "next/link"
 import { useState } from "react"
+import { stripe } from '../services/stripe'
 import AuthInput from "../components/auth/AuthInput"
 import { IconeAtencao } from "../components/icons"
 import useAuth from "../data/hook/useAuth"
+import BotaoAssine from '../components/BotatoAssine'
 
-export default function Autenticacao() {
+interface HomeProps {
+    product:  {
+        priceId: string;
+        amount: number
+    }
+}
+
+export default function Autenticacao({ product }: HomeProps) {
 
     const { cadastrar, login, loginGoogle } = useAuth()
 
@@ -94,7 +105,10 @@ export default function Autenticacao() {
                         <a onClick={() => setModo('cadastro')} className={`
                             text-blue-500 hover:text-blue-700 font-semibold
                             cursor-pointer
-                        `}> Crie um Conta Gratuitamente</a>
+                        `}> Assine por {product.amount} mensais.</a>
+                        <BotaoAssine priceId={product.priceId}>
+                            Inscreva-se agora
+                        </BotaoAssine>    
                     </p>
                 ) : (
                     <p className="mt-8">
@@ -108,4 +122,23 @@ export default function Autenticacao() {
             </div>
         </div>
     )
+}
+
+export const getStaticProps: GetStaticProps = async () => {
+const price = await stripe.prices.retrieve('price_1O0UrrIYJ05oSoaZonPhWe4G')
+
+const product = {
+    priceId: price.id,
+    amount: new Intl.NumberFormat('pt-BR', {
+        style: 'currency',
+        currency: 'BRL',
+    }).format(price.unit_amount / 100),
+}
+
+    return {
+        props: {
+            product
+        },
+        revalidate: 60 * 60 * 24, // 24 horas
+    }
 }

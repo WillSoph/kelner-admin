@@ -7,11 +7,10 @@ export default class ColecaoCliente implements ClienteRepositorio {
     toFirestore(cliente: Cliente) {
       return {
         nome: cliente.nome,
+        descricao: cliente.descricao,
         categoria: cliente.categoria,
-        preco: cliente.preco,        
-        id: cliente.id,
-        // Adicionando a propriedade 'admin' com o ID do usuário logado
-        admin: firebase.auth().currentUser.uid,
+        imagemUrl: cliente.imagemUrl,
+        preco: cliente.preco,
       };
     },
     fromFirestore(
@@ -19,66 +18,75 @@ export default class ColecaoCliente implements ClienteRepositorio {
       options: firebase.firestore.SnapshotOptions
     ): Cliente {
       const dados = snapshot.data(options);
-      return new Cliente(dados.nome, dados.categoria, dados.preco, snapshot.id, dados.admin);
+      return new Cliente(dados.nome, dados.descricao, dados.categoria, dados.imagemUrl, dados.preco, snapshot.id);
     },
   };
 
   async salvar(cliente: Cliente): Promise<Cliente> {
-    if (cliente?.id) {
-      await this.colecao().doc(cliente.id).set(cliente);
+    const idUsuario = firebase.auth().currentUser?.uid;
+
+    if (cliente?.id && idUsuario) {
+      await this.colecao(idUsuario).doc(cliente.id).set(cliente);
       return cliente;
     } else {
-      const docRef = await this.colecao().add(cliente);
+      const docRef = await this.colecao(idUsuario).add(cliente);
       const doc = await docRef.get();
       return doc.data();
     }
   }
 
   async excluir(cliente: Cliente): Promise<void> {
-    return this.colecao().doc(cliente.id).delete();
-  }
-  
-//   async obterTodos(): Promise<Cliente[]> {
-//     // Obtendo o ID do usuário logado
-//     const idUsuario = firebase.auth().currentUser?.uid;
+    const idUsuario = firebase.auth().currentUser?.uid;
 
-//     // Realizando a consulta apenas para os clientes do usuário logado
-//     if (idUsuario) {
-//         const query = await this.colecao().where("admin", "==", idUsuario).get();
-//         return query.docs.map(doc => doc.data()) ?? [];
-//       }
-//   }
-
-async obterTodos(): Promise<Cliente[]> {
-    // Função utilitária para obter o idUsuario de forma assíncrona
-    const obterIdUsuario = async (): Promise<string | null> => {
-      return new Promise((resolve) => {
-        const cancelar = firebase.auth().onIdTokenChanged((usuario) => {
-          const novoIdUsuario = usuario?.uid || null;
-          resolve(novoIdUsuario);
-        });
-  
-        return () => {
-          if (cancelar) {
-            cancelar();
-          }
-        };
-      });
-    };
-  
-    // Obtendo o ID do usuário logado de forma assíncrona
-    const idUsuario = await obterIdUsuario();
-  
-    // Realizando a consulta apenas para os clientes do usuário logado
     if (idUsuario) {
-      const query = await this.colecao().where("admin", "==", idUsuario).get();
-      return query.docs.map((doc) => doc.data()) ?? [];
+      return this.colecao(idUsuario).doc(cliente.id).delete();
+    } else {
+      throw new Error("Usuário não autenticado.");
     }
-  
-    return [];
   }
 
-  private colecao() {
-    return firebase.firestore().collection("clientes").withConverter(this.#conversor);
+  async obterTodos(): Promise<Cliente[]> {
+    try {
+      const idUsuario = await this.obterIdUsuario();
+  
+      if (idUsuario) {
+        const query = await this.colecao(idUsuario).get();
+        return query.docs.map((doc) => doc.data()) ?? [];
+      }
+  
+      return [];
+    } catch (error) {
+      console.error("Erro ao obter clientes:", error);
+      return [];
+    }
+  }
+
+  async obterTodosDoUsuario(idUsuario: string): Promise<Cliente[]> {
+    try {
+      const query = await this.colecao(idUsuario).get();
+      return query.docs.map((doc) => doc.data()) ?? [];
+    } catch (error) {
+      console.error('Erro ao obter clientes do usuário:', error);
+      return [];
+    }
+  }
+  
+  private async obterIdUsuario(): Promise<string | null> {
+    return new Promise((resolve) => {
+      const cancelar = firebase.auth().onIdTokenChanged((usuario) => {
+        const novoIdUsuario = usuario?.uid || null;
+        resolve(novoIdUsuario);
+      });
+  
+      return () => {
+        if (cancelar) {
+          cancelar();
+        }
+      };
+    });
+  }
+
+  private colecao(idUsuario: string) {
+    return firebase.firestore().collection(`usuarios/${idUsuario}/clientes`).withConverter(this.#conversor);
   }
 }

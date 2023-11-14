@@ -5,4 +5,5 @@ export default interface Usuario {
     token: string
     provedor: string
     imagemUrl: string
+    stripe_customer_id: string
 }

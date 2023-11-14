@@ -1,6 +1,32 @@
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import Cliente from "../core/Cliente"
 import { IconeEdicao, IconeLixo } from "./icons"
+
+interface FiltroCategoriaProps {
+    categorias: string[];
+    categoriaSelecionada: string;
+    onCategoriaSelecionada: (categoria: string) => void;
+  }
+  
+  function FiltroCategoria(props: FiltroCategoriaProps) {
+    return (
+      <div className="flex space-x-2">
+        {props.categorias.map((categoria) => (
+          <button
+            key={categoria}
+            onClick={() => props.onCategoriaSelecionada(categoria)}
+            className={`px-4 py-2 mb-2 rounded ${
+              props.categoriaSelecionada === categoria
+                ? "bg-orange-500 text-white"
+                : "bg-white border-2 border-orange-500 text-gray-700"
+            }`}
+          >
+            {categoria}
+          </button>
+        ))}
+      </div>
+    );
+  }
 
 interface TabelaProps {
     clientes: Cliente[]
@@ -10,14 +36,26 @@ interface TabelaProps {
 
 export default function Tabela(props: TabelaProps) {
 
+    const [categoriaSelecionada, setCategoriaSelecionada] = useState("Todas");
+
+    const categorias = [...new Set(props.clientes.map((cliente) => cliente.categoria))];
+
+    const clientesFiltrados =
+        categoriaSelecionada === "Todas"
+        ? props.clientes
+        : props.clientes.filter((cliente) => cliente.categoria === categoriaSelecionada);
+
+    clientesFiltrados.sort((a, b) => a.nome.localeCompare(b.nome));
+
     const exibirAcoes = props.clienteExcluido || props.clienteSelecionado
 
     function renderizarCabecalho() {
         return (
                 <tr>
-                    <th className="text-left p-4">Código</th>
+                    {/* <th className="text-left p-4">Código</th> */}
                     <th className="text-left p-4">Nome</th>
                     <th className="text-left p-4">Categoria</th>
+                    <th className="text-left p-4">Descrição</th>
                     <th className="text-left p-4">Preço</th>
                     {exibirAcoes ? <th className="p-4">Ações</th> : false }
                 </tr>
@@ -26,17 +64,19 @@ export default function Tabela(props: TabelaProps) {
 
     useEffect(() => {
         renderizarDados()
-        console.log('renderiza')
-    },[props.clientes])
+    },[clientesFiltrados])
     
     function renderizarDados() {
-        return props.clientes?.map((cliente, i) => {
+        return clientesFiltrados?.map((cliente, i) => {
             return (
                 <tr key={cliente.id}
-                    className={`${i % 2 === 0 ? 'bg-purple-200' : 'bg-purple-100' }`}>
-                    <td className="text-left p-4">{cliente.id}</td>
+                    className={`${i % 2 === 0 ? 'bg-gray-100' : 'bg-gray-200' }`}>
+                    {/* <td className="text-left p-4">{cliente.id}</td> */}
                     <td className="text-left p-4">{cliente.nome}</td>
                     <td className="text-left p-4">{cliente.categoria}</td>
+                    <td className="text-left p-4">{cliente.descricao?.length > 50
+                    ? `${cliente.descricao?.substring(0, 50)}...`
+                    : cliente.descricao?.length <= 0 ? 'Sem descrição' : cliente.descricao}</td>
                     <td className="text-left p-4">{cliente.preco}</td>
                     {exibirAcoes ?  renderizarAcoes(cliente) : false}
                 </tr>
@@ -69,12 +109,18 @@ export default function Tabela(props: TabelaProps) {
         )
     }
 
+
     return (
         <div className="overflow-x-auto">
+            <FiltroCategoria
+                categorias={["Todas", ...categorias]}
+                categoriaSelecionada={categoriaSelecionada}
+                onCategoriaSelecionada={setCategoriaSelecionada}
+            />
             <table className="w-full rounded-xl overflow-hidden">
                 <thead className={`
                     text-gray-100
-                    bg-gradient-to-r from-purple-500 to-purple-800
+                     bg-gray-500
                 `}>
                 {renderizarCabecalho()}
                 </thead>

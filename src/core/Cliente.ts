@@ -1,41 +1,45 @@
 export default class Cliente {
-    #id: string
-    #admin: string
-    #nome: string
-    #categoria: string
-    #preco: number
-
-    constructor(nome: string, categoria: string, preco: number, id: string = null, admin?: string) {
-        this.#nome = nome;
-        this.#categoria = categoria;
-        this.#preco = preco;
-
-        // Corrigindo a ordem dos parâmetros para evitar confusão
-        this.#id = id;
-        this.#admin = admin;
+    #id: string;
+    #nome: string;
+    #descricao: string;
+    #categoria: string;
+    #imagemUrl: string | File;
+    #preco: number;
+  
+    constructor(nome: string, descricao: string, categoria: string, imagemUrl: string | File, preco: number, id: string = null) {
+      this.#nome = nome;
+      this.#descricao = descricao;
+      this.#categoria = categoria;
+      this.#imagemUrl = imagemUrl;
+      this.#preco = preco;
+      this.#id = id;      
     }
-
+  
     static vazio() {
-        return new Cliente('', '', 0);
+      return new Cliente('', '', '', '', 0);
     }
-
+  
     get id() {
-        return this.#id;
+      return this.#id;
     }
-
-    get admin() {
-        return this.#admin;
-    }
-
+  
     get nome() {
-        return this.#nome;
+      return this.#nome;
     }
 
+    get descricao() {
+      return this.#descricao;
+    }
+  
     get categoria() {
-        return this.#categoria;
+      return this.#categoria;
     }
-
+  
+    get imagemUrl() {
+      return this.#imagemUrl;
+    }
+  
     get preco() {
-        return this.#preco;
+      return this.#preco;
     }
-}
+  }

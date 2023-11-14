@@ -16,31 +16,31 @@ const people = [
       id: 1,
       name: 'Entrada',
       avatar:
-        'https://images.unsplash.com/photo-1491528323818-fdd1faba62cc?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
+        './images/food/entrada.png',
     },
     {
       id: 2,
       name: 'Prato principal',
       avatar:
-        'https://images.unsplash.com/photo-1550525811-e5869dd03032?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
+        './images/food/prato-principal.png',
     },
     {
       id: 3,
       name: 'Sobremesa',
       avatar:
-        'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2.25&w=256&h=256&q=80',
+        './images/food/sobremesa.png',
     },
     {
       id: 4,
       name: 'Bebida sem álcool',
       avatar:
-        'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
+        './images/food/bebida-nao-alcoolica.png',
     },
     {
       id: 5,
       name: 'Bebida alcoólica',
       avatar:
-        'https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
+        './images/food/bebida-alcoolica.png',
     },    
   ]
 
@@ -58,20 +58,6 @@ export default function SelectInput(props: SelectInputProps) {
     }
     return (
         <div className={`flex flex-col ${props.className}`}>
-            {/* <label className="mb-2">
-                {props.texto}
-            </label>
-            <input 
-                type={props.tipo ?? 'text'} 
-                value={props.valor}
-                readOnly={props.somenteLeitura}
-                onChange={e => props.valorMudou?.(e.target.value)}
-                className={`
-                    border border-purple-500 rounded-lg 
-                    focus:outline-none bg-gray-100 px-4 py-2 
-                    ${props.somenteLeitura ? '' : 'focus:bg-white'}
-                `}
-            /> */}
             
             <Listbox value={selected} onChange={(selectedPerson) => handleListboxChange(selectedPerson)}>
             {({ open }) => (

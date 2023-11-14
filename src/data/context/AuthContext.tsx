@@ -17,23 +17,30 @@ const AuthContext = createContext<AuthContextProps>({})
 
 async function usuarioNormalizado(usuarioFirebase: firebase.User): Promise<Usuario> {
     const token = await usuarioFirebase.getIdToken()
+    const usuario = await usuarioFirebase
+    Cookies.set('admin-template-cod3r-auth-uid', usuario.uid, {
+        expires: 7
+        });
     return {
         uid: usuarioFirebase.uid,
         nome: usuarioFirebase.displayName,
         email: usuarioFirebase.email,
+        stripe_customer_id: usuarioFirebase.stripe_customer_id,
         token,
         provedor: usuarioFirebase.providerData[0].providerId,
         imagemUrl: usuarioFirebase.photoURL
     }
 }
 
-function gerenciarCookie(logado: boolean) {
+async function gerenciarCookie(logado: boolean) {
     if (logado) {
         Cookies.set('admin-template-cod3r-auth', logado, {
             expires: 7
-        })
+        })        
     } else {
         Cookies.remove('admin-template-cod3r-auth')
+        Cookies.remove('admin-template-cod3r-auth-token')
+        Cookies.remove('admin-template-cod3r-auth-uid')
     }
 }
 
@@ -56,14 +63,30 @@ export function AuthProvider(props) {
         }
     }
 
+    // async function login(email, senha) {
+    //     try {
+    //         setCarregando(true)
+    //         const resp = await firebase.auth()
+    //             .signInWithEmailAndPassword(email, senha)
+    
+    //         await configurarSessao(resp.user)
+    //         route.push('/')
+    //     } finally {
+    //         setCarregando(false)
+    //     }
+    // }
+
     async function login(email, senha) {
         try {
             setCarregando(true)
             const resp = await firebase.auth()
                 .signInWithEmailAndPassword(email, senha)
     
-            await configurarSessao(resp.user)
-            route.push('/')
+            await configurarSessao(resp.user)            
+            Cookies.set('admin-template-cod3r-auth-token', email, {
+            expires: 7
+            });
+            route.push('/painel')
         } finally {
             setCarregando(false)
         }
@@ -71,16 +94,45 @@ export function AuthProvider(props) {
 
     async function cadastrar(email, senha) {
         try {
-            setCarregando(true)
-            const resp = await firebase.auth()
-                .createUserWithEmailAndPassword(email, senha)
+            setCarregando(true);
+            const resp = await firebase.auth().createUserWithEmailAndPassword(email, senha);
     
-            await configurarSessao(resp.user)
-            route.push('/')
+            // Verifique se o usuário foi criado com sucesso
+            if (resp.user) {
+                console.log('Novo usuário criado:', resp.user);
+    
+                // Adicione informações adicionais ao Firestore
+                const firestore = firebase.firestore(); // Obtenha a instância do Firestore
+                await firestore.collection('usuarios').doc(resp.user.uid).set({
+                    email: email,
+                    id: resp.user.uid
+                    // outras informações, se necessário
+                });
+    
+                await configurarSessao(resp.user);
+                route.push('/painel');
+            } else {
+                console.error('Falha ao criar usuário. Resp.user é nulo.');
+            }
+        } catch (error) {
+            console.error('Erro ao cadastrar:', error);
         } finally {
-            setCarregando(false)
+            setCarregando(false);
         }
     }
+
+    // async function cadastrar(email, senha) {
+    //     try {
+    //         setCarregando(true)
+    //         const resp = await firebase.auth()
+    //             .createUserWithEmailAndPassword(email, senha)
+    
+    //         await configurarSessao(resp.user)
+    //         route.push('/')
+    //     } finally {
+    //         setCarregando(false)
+    //     }
+    // }
 
     async function loginGoogle() {
         try {
