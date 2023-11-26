@@ -18,10 +18,11 @@ interface HomeProps {
 
 export default function Autenticacao({ product }: HomeProps) {
 
-    const { cadastrar, login, loginGoogle } = useAuth()
+    const { cadastrar, login, loginGoogle, loginAutenticado } = useAuth()
 
     const [erro, setErro] = useState(null)
     const [modo, setModo] = useState<'login' | 'cadastro'>('login')
+    const [nome, setNome] = useState('')
     const [email, setEmail] = useState('')
     const [senha, setSenha] = useState('')
 
@@ -33,9 +34,9 @@ export default function Autenticacao({ product }: HomeProps) {
     async function submeter() {
         try {
             if (modo === 'login') {
-                await login(email, senha)
+                await loginAutenticado(email, senha)
             } else {
-                await cadastrar(email, senha)
+                await cadastrar(nome, email, senha)
             }
         } catch(e) {
             exibirErro(e?.message ?? 'Erro desconhecido!')
@@ -68,6 +69,15 @@ export default function Autenticacao({ product }: HomeProps) {
                     </div>
                 ) : false}
                 
+                {modo === 'cadastro' && (
+                <AuthInput
+                    label="Nome"
+                    tipo="text"
+                    valor={nome}
+                    valorMudou={setNome}
+                    obrigatorio
+                />
+                )}
                 <AuthInput
                     label="Email"
                     tipo="email"

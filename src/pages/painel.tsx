@@ -9,6 +9,7 @@ import Layout from '../components/template/Layout'
 import LayoutConteudo from '../components/template/LayoutConteudo'
 import useAuth from '../data/hook/useAuth';
 import useClientes from '../data/hook/useClientes'
+import { useTotalAcessible } from '../data/context/TotalAcessibleContext';
 import { useState, useEffect, useRef, Fragment } from "react";
 // import QRCode from 'react-qr-code';
 import QRCode from 'qrcode.react';
@@ -16,12 +17,19 @@ import QRCode from 'qrcode.react';
 export default function Home() {
 
   const { usuario, carregando } = useAuth()
+  const { totalAcessible, setTotalAcessible } = useTotalAcessible();
   const router = useRouter();
   const qrCodeRef = useRef<HTMLElement | null>(null);
   const cancelButtonRef = useRef(null)
   const [isQRCodeLoaded, setIsQRCodeLoaded] = useState(false);
   const [empresa, setEmpresa] = useState([])
-  const [open, setOpen] = useState(false)
+  const [open, setOpen] = useState(false)  
+
+  useEffect(() => {
+    if (!totalAcessible) {
+      router.push(`/`)
+    }
+  }, [totalAcessible]);
 
   const { 
     cliente, 
@@ -60,7 +68,6 @@ export default function Home() {
     
         const empresaData = response.data.documents;
         setEmpresa(empresaData[0])
-        console.log('empresa :', empresaData[0])
       } catch (error) {
         console.error('Erro ao obter empresa:', error);
       }
@@ -68,33 +75,33 @@ export default function Home() {
 
   const cardapioQRCodeLink = `/cardapio/${usuario?.uid}`;
 
-  const printQRCode = () => {
-    const printContent = document.getElementById('modalContent'); // substitua 'modalContent' pelo ID real do elemento do modal
-    const printWindow = window.open('', '_blank');
+  // const printQRCode = () => {
+  //   const printContent = document.getElementById('modalContent'); // substitua 'modalContent' pelo ID real do elemento do modal
+  //   const printWindow = window.open('', '_blank');
   
-    if (printWindow && printContent) {
-      printWindow.document.open();
-      printWindow.document.write(`
-        <html>
-          <head>
-            <title>QRCode</title>
-          </head>
-          <body style="text-align: center;">
-            ${printContent.innerHTML}
-            <script type="text/javascript">
-              window.onload = function() {
-                window.print();
-                window.onafterprint = function() {
-                  window.close();
-                }
-              }
-            </script>
-          </body>
-        </html>
-      `);
-      printWindow.document.close();
-    }
-  };
+  //   if (printWindow && printContent) {
+  //     printWindow.document.open();
+  //     printWindow.document.write(`
+  //       <html>
+  //         <head>
+  //           <title>QRCode</title>
+  //         </head>
+  //         <body style="text-align: center;">
+  //           ${printContent.innerHTML}
+  //           <script type="text/javascript">
+  //             window.onload = function() {
+  //               window.print();
+  //               window.onafterprint = function() {
+  //                 window.close();
+  //               }
+  //             }
+  //           </script>
+  //         </body>
+  //       </html>
+  //     `);
+  //     printWindow.document.close();
+  //   }
+  // };
 
   return (
     <>

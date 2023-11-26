@@ -1,13 +1,19 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import axios from 'axios'
 import { useRouter } from 'next/router';
 import Image from 'next/image';
 import { BsCart2 } from 'react-icons/bs';
 import { useOrder } from '../../../contexts/OrderProvider';
+import useAuth from '../../../data/hook/useAuth';
 
 const Navbar = () => {
+    const { usuario } = useAuth()
     const [changeHeader, setChangeHeader] = useState(false)
     const router = useRouter();
     const { order } = useOrder();
+    const [empresa, setEmpresa] = useState([])
+
+    const url = process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID
 
     //header change function 
     const onChangeHeader = () => {
@@ -22,11 +28,29 @@ const Navbar = () => {
     if (typeof window !== 'undefined') {
         window.addEventListener('scroll', onChangeHeader);
       }
+
+    useEffect(() => {
+    if (usuario) {
+        obterEmpresa();
+    }
+    }, [usuario]);
+
+    const obterEmpresa = async () => {
+        try {
+            const response = await axios.get(`https://firestore.googleapis.com/v1/projects/${url}/databases/(default)/documents/usuarios/${usuario?.uid}/empresa`);
+        
+            const empresaData = response.data.documents;
+            setEmpresa(empresaData[0])
+            
+            } catch (error) {
+            console.error('Erro ao obter empresa:', error);
+            }
+    }; 
     return (
         <header className={changeHeader ? "bg-white fixed z-50 top-0 left-0 w-full shadow-md transition duration-500" : "bg-transparent fixed z-50 top-0 left-0 w-full transition duration-500"}>
             <nav className="flex items-center max-w-screen-xl mx-auto px-6 py-3">
                 {/* left  */}
-                <div className="flex flex-grow">
+                <div className="flex flex-grow items-center">
                     <Image
                         src="/images/logo.svg"
                         alt="N"
@@ -34,6 +58,7 @@ const Navbar = () => {
                         height="32"
                         className="w-8"
                       />
+                      <p className="ml-4">{empresa.fields?.nome.stringValue}</p>
                 </div>                
                 <div className="flex items-center justify-end space-x-6">
                 <div className="relative flex cursor-pointer" onClick={() => router.push('/orders')}>

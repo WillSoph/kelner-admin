@@ -6,6 +6,7 @@ import Entrada from "../components/Entrada";
 import { uploadImagem } from "../core/UploadImagem"
 import useEmpresas from "../data/hook/useEmpresa";
 import useAuth from "../data/hook/useAuth";
+import { useTotalAcessible } from '../data/context/TotalAcessibleContext';
 import Layout from "../components/template/Layout";
 import LayoutConteudo from "../components/template/LayoutConteudo";
 
@@ -18,6 +19,7 @@ interface EditarEmpresaProps {
 export default function Formulario(props: EditarEmpresaProps) {
     const { salvarEmpresa } = useEmpresas();
     const { usuario, carregando } = useAuth()
+    const { totalAcessible, setTotalAcessible } = useTotalAcessible();
     const router = useRouter();
     const id = props.empresa?.id
     
@@ -26,6 +28,12 @@ export default function Formulario(props: EditarEmpresaProps) {
     const [nome, setNome] = useState(props.empresa?.fields?.nome?.stringValue || '');
     const [imagem, setImagem] = useState<File | null>(null);
     const url = process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID
+
+    useEffect(() => {
+        if (!totalAcessible) {
+            router.push(`/`)
+        }
+    }, [totalAcessible]);
 
     useEffect(() => {
         if (usuario) {
@@ -66,7 +74,7 @@ export default function Formulario(props: EditarEmpresaProps) {
         }
 
     return (
-        <Layout titulo={empresa.fields?.nome.stringValue} subtitulo="Estamos construindo um template Admin!">
+        <Layout titulo={empresa.fields?.nome.stringValue} subtitulo="">
             <div className={`
                 flex justify-center items-center h-full 
                 bg-gray-200 dark:bg-gray-900 rounded-md border-1 border-gray-500

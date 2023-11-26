@@ -2,6 +2,8 @@ import { GetStaticProps } from 'next'
 import { Fragment, useEffect, useRef, useState } from 'react'
 import useAuth from "../data/hook/useAuth"
 import { stripe } from '../services/stripe'
+import { getStripeJs } from '../services/stripe-js';
+import { api } from '../services/api';
 import AuthInput from "../components/auth/AuthInput"
 import { IconeAtencao } from "../components/icons"
 import { Dialog, Transition } from '@headlessui/react'
@@ -14,11 +16,13 @@ import { Disclosure } from "@headlessui/react";
 import BotaoAssine from '../components/BotatoAssine'
 import firebase from "../firebase/config";
 import { useTotalAcessible } from '../data/context/TotalAcessibleContext'
+import { useRouter } from 'next/router';
 
 
 export default function Navbar() {
     const [open, setOpen] = useState(false)
     const cancelButtonRef = useRef(null)
+    const router = useRouter();
 
     const { cadastrar, login, logout, loginGoogle, usuario } = useAuth()
     const [usuarioId, setUsuarioId] = useState<string | null>(null);
@@ -50,6 +54,7 @@ export default function Navbar() {
         } catch(e) {
             exibirErro(e?.message ?? 'Erro desconhecido!')
         }
+        setOpen(false)
     }
 
   const navigation = [
@@ -121,6 +126,29 @@ export default function Navbar() {
     }
   
     return false;
+  }
+
+  async function handleSubscribe() {
+    if (!usuario?.email) {
+      setOpen(true)
+      return;
+    }
+
+    try {
+      const response = await api.post('/subscribe')
+
+      const { sessionId } = response.data;
+
+      const stripe = await getStripeJs()
+
+      await stripe?.redirectToCheckout({ sessionId })
+    } catch (err) {
+      alert(err.message);
+    }
+  }
+
+  function handlePainelRedirect() {
+    router.push('/painel')
   }
 
   return (
@@ -229,7 +257,7 @@ export default function Navbar() {
                     </div>
                   </div>
                 </div>
-                <div className="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
+                {/* <div className="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
                   <button
                     type="button"
                     className="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto"
@@ -245,7 +273,7 @@ export default function Navbar() {
                   >
                     Cancel
                   </button>
-                </div>
+                </div> */}
               </Dialog.Panel>
             </Transition.Child>
           </div>
@@ -310,13 +338,13 @@ export default function Navbar() {
                       </a>
 
                       {usuario?.email && totalAcessible && (
-                        <a onClick={() => setOpen(true) } className="w-full px-6 py-2 mt-3 text-center text-white bg-indigo-600 rounded-md lg:ml-5">         
-                          Total acessivel
+                        <a onClick={ handlePainelRedirect } className="w-full px-6 py-2 mt-3 text-center text-white bg-indigo-600 rounded-md lg:ml-5">         
+                          Acessar painel
                       </a>
                       )}
-                    {usuario?.email ? (
-                      <a onClick={() => setOpen(true) } className="w-full px-6 py-2 mt-3 text-center text-white bg-indigo-600 rounded-md lg:ml-5">         
-                          Acessar painel
+                    {usuario?.email && !totalAcessible ? (
+                      <a onClick={ handleSubscribe } className="w-full px-6 py-2 mt-3 text-center text-white bg-indigo-600 rounded-md lg:ml-5">         
+                          Assine Agora
                       </a>
                     ):(
                       <a onClick={() => setOpen(true) } className="w-full px-6 py-2 mt-3 text-center text-white bg-indigo-600 rounded-md lg:ml-5">         
@@ -358,9 +386,14 @@ export default function Navbar() {
         </div>
 
         <div className="hidden mr-3 space-x-4 lg:flex nav__item">
-          {usuario?.email ? 
-            <a onClick={() => setOpen(true) } className="px-6 py-2 cursor-pointer text-white bg-indigo-600 rounded-md md:ml-5">
+          {usuario?.email && totalAcessible ? 
+            <a onClick={ handlePainelRedirect } className="px-6 py-2 cursor-pointer text-white bg-indigo-600 rounded-md md:ml-5">
               Acessar painel
+            </a>
+            :
+            usuario?.email && !totalAcessible ? 
+            <a onClick={ handleSubscribe } className="px-6 py-2 cursor-pointer text-white bg-indigo-600 rounded-md md:ml-5">
+              Assine Agora
             </a>
             :
             <a onClick={() => setOpen(true) } className="px-6 py-2 cursor-pointer text-white bg-indigo-600 rounded-md md:ml-5">

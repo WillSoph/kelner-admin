@@ -9,6 +9,7 @@ interface AuthContextProps {
     carregando?: boolean
     cadastrar?: (email: string, senha: string) => Promise<void>
     login?: (email: string, senha: string) => Promise<void>
+    loginAutenticado?: (email: string, senha: string) => Promise<void>
     loginGoogle?: () => Promise<void>
     logout?: () => Promise<void>
 }
@@ -63,19 +64,6 @@ export function AuthProvider(props) {
         }
     }
 
-    // async function login(email, senha) {
-    //     try {
-    //         setCarregando(true)
-    //         const resp = await firebase.auth()
-    //             .signInWithEmailAndPassword(email, senha)
-    
-    //         await configurarSessao(resp.user)
-    //         route.push('/')
-    //     } finally {
-    //         setCarregando(false)
-    //     }
-    // }
-
     async function login(email, senha) {
         try {
             setCarregando(true)
@@ -84,7 +72,23 @@ export function AuthProvider(props) {
     
             await configurarSessao(resp.user)            
             Cookies.set('admin-template-cod3r-auth-token', email, {
-            expires: 7
+            expires: 1
+            });
+            route.push('/')
+        } finally {
+            setCarregando(false)
+        }
+    }
+
+    async function loginAutenticado(email, senha) {
+        try {
+            setCarregando(true)
+            const resp = await firebase.auth()
+                .signInWithEmailAndPassword(email, senha)
+    
+            await configurarSessao(resp.user)            
+            Cookies.set('admin-template-cod3r-auth-token', email, {
+            expires: 1
             });
             route.push('/painel')
         } finally {
@@ -110,7 +114,7 @@ export function AuthProvider(props) {
                 });
     
                 await configurarSessao(resp.user);
-                route.push('/painel');
+                route.push('/');
             } else {
                 console.error('Falha ao criar usuário. Resp.user é nulo.');
             }
@@ -120,19 +124,6 @@ export function AuthProvider(props) {
             setCarregando(false);
         }
     }
-
-    // async function cadastrar(email, senha) {
-    //     try {
-    //         setCarregando(true)
-    //         const resp = await firebase.auth()
-    //             .createUserWithEmailAndPassword(email, senha)
-    
-    //         await configurarSessao(resp.user)
-    //         route.push('/')
-    //     } finally {
-    //         setCarregando(false)
-    //     }
-    // }
 
     async function loginGoogle() {
         try {
@@ -174,7 +165,8 @@ export function AuthProvider(props) {
             login,
             cadastrar,
             loginGoogle,
-            logout
+            logout,
+            loginAutenticado
         }}>
             {props.children}
         </AuthContext.Provider>

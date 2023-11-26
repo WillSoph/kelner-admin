@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Cliente from "../core/Cliente";
 import Botao from "./Botao";
 import Entrada from "./Entrada";
@@ -21,6 +21,13 @@ export default function Formulario(props: FormularioProps) {
     const [preco, setPreco] = useState(props.cliente?.preco ?? 0)
     const [imagem, setImagem] = useState<File | null>(null);
 
+    // Adicione este useEffect para manter a imagem existente se não houver alteração
+    useEffect(() => {
+        if (props.cliente?.imagemUrl) {
+            setImagem(props.cliente?.imagemUrl);
+        }
+    }, [props.cliente]);
+
     const handleSalvar = async () => {
         setSalvando(true); // Define o estado para indicar que está salvando
 
@@ -33,19 +40,17 @@ export default function Formulario(props: FormularioProps) {
             } else if (typeof imagem === 'string') {
                 clienteComImagem = new Cliente(nome, descricao, categoria, imagem, preco, id);
             } else {
-                console.error('Imagem é nula.');
-                return;
+                // Se a imagem não for um File nem uma string, mantenha a imagem existente
+                clienteComImagem = new Cliente(nome, descricao, categoria, props.cliente.imagemUrl, preco, id);
             }
 
-            // Simula um atraso de 1 segundo para mostrar o loading
-            // Em sua aplicação real, você substituirá isso pela lógica de salvamento real
             await new Promise((resolve) => setTimeout(resolve, 1000));
 
             props.clienteMudou?.(clienteComImagem);
         } catch (error) {
             console.error('Erro ao salvar:', error);
         } finally {
-            setSalvando(false); // Define o estado de volta para indicar que não está mais salvando
+            setSalvando(false);
         }
     };
 

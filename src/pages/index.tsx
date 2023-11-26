@@ -17,10 +17,10 @@ export default function Home() {
     <>  
 
       <Head>
-        <title>Nextly - Free Nextjs & TailwindCSS Landing Page Template</title>
+        <title>Kelner - Sistema para cardápio virtual</title>
         <meta
           name="description"
-          content="Nextly is a free landing page template built with next.js & Tailwind CSS"
+          content="Desenvolvido para atender às necessidades únicas do setor gastronômico"
         />
         <link rel="icon" href="/favicon.ico" />
       </Head>
@@ -30,9 +30,9 @@ export default function Home() {
       <SectionTitle
         pretitle="Nextly Benefits"
         title=" Why should you use this landing page">
-        Nextly is a free landing page & marketing website template for startups
-        and indie projects. Its built with Next.js & TailwindCSS. And its
-        completely open-source.
+        Desenvolvido para atender às necessidades únicas do setor gastronômico, 
+        o Kelner é a solução completa que simplifica desde o gerenciamento de pedidos 
+        até a análise de desempenho.
       </SectionTitle>
       <Benefits data={benefitOne} />
       <Benefits imgPos="right" data={benefitTwo} />
