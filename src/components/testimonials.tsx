@@ -13,42 +13,39 @@ const Testimonials  = () => {
         <div className="lg:col-span-2 xl:col-auto">
           <div className="flex flex-col justify-between w-full h-full bg-gray-100 px-14 rounded-2xl py-14 dark:bg-trueGray-800">
             <p className="text-2xl leading-normal ">
-              Share a real <Mark>testimonial</Mark>
-              that hits some of your benefits from one of your popular customer.
+            Kelner revolucionou nosso cardápio! <Mark>Fácil</Mark> e eficiente.
             </p>
 
             <Avatar
               image={userOneImg}
-              name="Sarah Steiner"
-              title="VP Sales at Google"
+              name="Ana Oliveira"
+              title="Chef Executiva no Restaurante Sabor & Arte"
             />
           </div>
         </div>
         <div className="">
           <div className="flex flex-col justify-between w-full h-full bg-gray-100 px-14 rounded-2xl py-14 dark:bg-trueGray-800">
             <p className="text-2xl leading-normal ">
-              Make sure you only pick the <Mark>right sentence</Mark>
-              to keep it short and simple.
+             A geração de QRCode instantânea é <Mark>incrível</Mark>. Amamos o Kelner!
             </p>
 
             <Avatar
               image={userTwoImg}
-              name="Dylan Ambrose"
-              title="Lead marketer at Netflix"
+              name="Lucas Santos"
+              title="Proprietário no Bistrô da Praça"
             />
           </div>
         </div>
         <div className="">
           <div className="flex flex-col justify-between w-full h-full bg-gray-100 px-14 rounded-2xl py-14 dark:bg-trueGray-800">
             <p className="text-2xl leading-normal ">
-              This is an <Mark>awesome</Mark> landing page template I&apos;ve seen. I
-              would use this for anything.
+            Com o Kelner, atualizar o cardápio é um piscar de olhos. <Mark>Top</Mark>!
             </p>
 
             <Avatar
               image={userThreeImg}
-              name="Gabrielle Winn"
-              title="Co-founder of Acme Inc"
+              name="Rodrigo Silva"
+              title="Gerente Geral no Cantinho Gourmet"
             />
           </div>
         </div>

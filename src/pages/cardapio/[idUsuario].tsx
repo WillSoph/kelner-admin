@@ -72,6 +72,8 @@ function Cardapio() {
         <p className={menuTab === 'Entrada' ? "active_menu_tab poppins bg-primary" : "menu_tab poppins"} onClick={() => handleMenuTabs('Entrada')}>Entrada</p>
         <p className={menuTab === 'Prato principal' ? "active_menu_tab poppins bg-primary" : "menu_tab poppins"} onClick={() => handleMenuTabs('Prato principal')} style={{ whiteSpace: 'nowrap' }}>Prato principal</p>
         <p className={menuTab === 'Sobremesa' ? "active_menu_tab poppins bg-primary" : "menu_tab poppins"} onClick={() => handleMenuTabs('Sobremesa')}>Sobremesa</p>
+        <p className={menuTab === 'Bebida sem álcool' ? "active_menu_tab poppins bg-primary" : "menu_tab poppins"} onClick={() => handleMenuTabs('Bebida sem álcool')} style={{ whiteSpace: 'nowrap' }}>Bebida sem álcool</p>
+        <p className={menuTab === 'Bebida alcoólica' ? "active_menu_tab poppins bg-primary" : "menu_tab poppins"} onClick={() => handleMenuTabs('Bebida alcoólica')} style={{ whiteSpace: 'nowrap' }}>Bebida alcoólica</p>
       </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 mt-12">
           {/* {filteredClientes.map((cliente) => (

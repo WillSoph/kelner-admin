@@ -197,10 +197,10 @@ const Hero = () => {
         <div className="flex items-center w-full lg:w-1/2">
           <div className="max-w-2xl mb-8">
             <h1 className="text-4xl font-bold leading-snug tracking-tight text-gray-800 lg:text-4xl lg:leading-tight xl:text-6xl xl:leading-tight dark:text-white">
-              Sistema para restaurantes simples e fácil de usar!
+              Sistema de cardápio virtual para restaurantes e lenchonetes
             </h1>
             <p className="py-5 text-xl leading-normal text-gray-500 lg:text-xl xl:text-2xl dark:text-gray-300">
-            Desenvolvido para atender às necessidades únicas do setor gastronômico, o Kelner é a solução completa que simplifica desde o gerenciamento de pedidos até a análise de desempenho.
+            Desenvolvido para atender às necessidades únicas do setor gastronômico, o Kelner é a solução que simplifica a gestão de seu cardápio virtual de maneira rápida e prática.
             </p>
 
             <div className="flex flex-col items-start space-y-3 sm:space-x-4 sm:space-y-0 sm:items-center sm:flex-row">
@@ -239,7 +239,7 @@ const Hero = () => {
           </div>
         </div>
       </Container>
-      <Container>
+      {/* <Container>
         <div className="flex flex-col justify-center">
           <div className="text-xl text-center text-gray-700 dark:text-white">
             Trusted by <span className="text-indigo-600">2000+</span>{" "}
@@ -264,7 +264,7 @@ const Hero = () => {
             </div>
           </div>
         </div>
-      </Container>
+      </Container> */}
     </>
   );
 }

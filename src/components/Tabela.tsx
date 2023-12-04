@@ -72,12 +72,12 @@ export default function Tabela(props: TabelaProps) {
                 <tr key={cliente.id}
                     className={`${i % 2 === 0 ? 'bg-gray-100' : 'bg-gray-200' }`}>
                     {/* <td className="text-left p-4">{cliente.id}</td> */}
-                    <td className="text-left p-4">{cliente.nome}</td>
-                    <td className="text-left p-4">{cliente.categoria}</td>
-                    <td className="text-left p-4">{cliente.descricao?.length > 50
+                    <td className="text-left text-stone-800 p-4">{cliente.nome}</td>
+                    <td className="text-left text-stone-800 p-4">{cliente.categoria}</td>
+                    <td className="text-left text-stone-800 p-4">{cliente.descricao?.length > 50
                     ? `${cliente.descricao?.substring(0, 50)}...`
                     : cliente.descricao?.length <= 0 ? 'Sem descrição' : cliente.descricao}</td>
-                    <td className="text-left p-4">{cliente.preco}</td>
+                    <td className="text-left text-stone-800 p-4">{cliente.preco}</td>
                     {exibirAcoes ?  renderizarAcoes(cliente) : false}
                 </tr>
             )

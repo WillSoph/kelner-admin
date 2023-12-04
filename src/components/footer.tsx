@@ -32,12 +32,12 @@ export default function Footer() {
             </div>
 
             <div className="max-w-md mt-4 text-gray-500 dark:text-gray-400">
-              Nextly is a free landing page & marketing website
-              template for startups and indie projects. Its built with
-              Next.js & TailwindCSS. And its completely open-source.
+            Desenvolvido para atender às necessidades únicas do setor gastronômico, 
+            o Kelner é a solução que simplifica a gestão de seu cardápio virtual de 
+            maneira rápida e prática.
             </div>
 
-            <div className="mt-5">
+            {/* <div className="mt-5">
               <a
                 href="https://vercel.com/?utm_source=web3templates&utm_campaign=oss"
                 target="_blank"
@@ -50,7 +50,7 @@ export default function Footer() {
                   height="44"
                 />
               </a>
-            </div>
+            </div> */}
           </div>
 
           <div>

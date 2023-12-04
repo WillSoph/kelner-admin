@@ -149,12 +149,11 @@ export default function Home() {
       <div className={`
         flex justify-center items-center h-full 
         bg-gray-200 dark:bg-gray-900 rounded-md border-1 border-gray-500
-        text-white
       `}>
         <LayoutConteudo titulo="Cadastro simples">
           {tabelaVisivel ? (
             <>  
-              <div className="flex justify-end mb-2">
+              <div className="flex justify-end mb-2 overflow-auto">
                 <button className="inline-flex w-full justify-center rounded-md bg-green-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-green-500 sm:ml-3 sm:w-auto" 
                   onClick={navegarParaEmpresa}>
                   Editar empresa

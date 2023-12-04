@@ -332,11 +332,11 @@ export default function Navbar() {
                           {item}
                       </Link>
                     ))}
-
+                      {usuario?.email && (
                       <a onClick={logout} className="w-full px-6 py-2 mt-3 text-center text-white bg-indigo-600 rounded-md lg:ml-5">
                         Deslogar
                       </a>
-
+                      )}
                       {usuario?.email && totalAcessible && (
                         <a onClick={ handlePainelRedirect } className="w-full px-6 py-2 mt-3 text-center text-white bg-indigo-600 rounded-md lg:ml-5">         
                           Acessar painel

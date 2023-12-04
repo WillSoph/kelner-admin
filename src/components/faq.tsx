@@ -2,6 +2,7 @@ import React from "react";
 import Container from "./container";
 import { Disclosure } from "@headlessui/react";
 import { ChevronUpIcon } from "@heroicons/react/24/solid";
+import { loadGetInitialProps } from "next/dist/shared/lib/utils";
 
 const Faq = () => {
   return (
@@ -35,22 +36,22 @@ const Faq = () => {
 
 const faqdata = [
   {
-    question: "Is this template completely free to use?",
-    answer: "Yes, this template is completely free to use.",
+    question: "Como faço para assinar o Kelner?",
+    answer: "É super simples! No topo dessa página clique em 'Login/Cadastrar'. Em seguida, se você ainda não possui uma conta, clique na frase 'Novo por aqui? Abra sua conta'.Após efetuar o Login, ficará disponível o botão 'Assine Agora'. Basta clicar, efetuar o pagamento da assinatura, e agora você terá disponível no topo do site a opção 'Acessar o Painel'. ",
   },
   {
-    question: "Can I use it in a commercial project?",
-    answer: "Yes, this you can.",
+    question: "Existe limite para quantidade de produtos cadastrados?",
+    answer: "Não! Você poderá cadastrar quantos produtos quiser sem a necessidade de estender seu plano.",
   },
   {
-    question: "What is your refund policy? ",
+    question: "Quanto custa a assinatura?",
     answer:
-      "If you're unhappy with your purchase for any reason, email us within 90 days and we'll refund you in full, no questions asked.",
+      "Por apenas 20 reais mensais você terá disponível toda a plataforma Kelner e suas funcionalidades.",
   },
   {
-    question: "Do you offer technical support? ",
+    question: "Meus dados estão protegidos? ",
     answer:
-      "No, we don't offer technical support for free downloads. Please purchase a support plan to get 6 months of support.",
+      "Com certeza! Nós não armazenamos informações sensíveis em nosso banco de dados.",
   },
 ];
 
