@@ -25,7 +25,14 @@ export default function Formulario(props: FormularioProps) {
     // Adicione este useEffect para manter a imagem existente se não houver alteração
     useEffect(() => {
         if (props.cliente?.imagemUrl) {
-            setImagem(props.cliente?.imagemUrl);
+            if (typeof props.cliente.imagemUrl === 'string') {
+                // Se imagemUrl for uma string, mantenha o estado imagem como está
+                setImagem(props.cliente.imagemUrl);
+            } else {
+                // Se imagemUrl for um File, crie uma nova instância de File e defina no estado imagem
+                const file = new File([], '', { type: '' });
+                setImagem(file);
+            }
         }
     }, [props.cliente]);
 
@@ -102,7 +109,11 @@ export default function Formulario(props: FormularioProps) {
                 />
             </div>
             {props.cliente.imagemUrl && (
-                <Image src={props.cliente.imagemUrl} alt="Imagem do Cliente" className="w-32 h-32 object-cover mb-5" />
+                props.cliente.imagemUrl && typeof props.cliente.imagemUrl === 'string' ? (
+                    <Image src={props.cliente.imagemUrl} alt="Imagem do Cliente" className="w-32 h-32 object-cover mb-5" />
+                ) : (
+                    <Image src={URL.createObjectURL(props.cliente.imagemUrl)} alt="Imagem do Cliente" className="w-32 h-32 object-cover mb-5" />
+                )
             )}
             <div className="flex justify-end mt-7">
                 <button 
