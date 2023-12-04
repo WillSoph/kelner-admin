@@ -22,17 +22,13 @@ export default function Formulario(props: FormularioProps) {
     const [preco, setPreco] = useState(props.cliente?.preco ?? 0)
     const [imagem, setImagem] = useState<File | null>(null);
 
-    // Adicione este useEffect para manter a imagem existente se não houver alteração
     useEffect(() => {
-        if (props.cliente?.imagemUrl) {
-            if (typeof props.cliente.imagemUrl === 'string') {
-                // Se imagemUrl for uma string, mantenha o estado imagem como está
-                setImagem(props.cliente.imagemUrl);
-            } else {
-                // Se imagemUrl for um File, crie uma nova instância de File e defina no estado imagem
-                const file = new File([], '', { type: '' });
-                setImagem(file);
-            }
+        if (props.cliente?.imagemUrl && typeof props.cliente.imagemUrl === 'string') {
+            // Se imagemUrl for uma string, mantenha o estado imagem como está
+            setImagem(null);
+        } else {
+            // Se imagemUrl for um File, defina no estado imagem
+            setImagem(props.cliente.imagemUrl as File);
         }
     }, [props.cliente]);
 
@@ -108,12 +104,10 @@ export default function Formulario(props: FormularioProps) {
                     onChange={(e) => setImagem(e.target.files?.[0] || null)}
                 />
             </div>
-            {props.cliente.imagemUrl && (
-                props.cliente.imagemUrl && typeof props.cliente.imagemUrl === 'string' ? (
-                    <Image src={props.cliente.imagemUrl} alt="Imagem do Cliente" className="w-32 h-32 object-cover mb-5" />
-                ) : (
-                    <Image src={URL.createObjectURL(props.cliente.imagemUrl)} alt="Imagem do Cliente" className="w-32 h-32 object-cover mb-5" />
-                )
+            {imagem && typeof imagem === 'string' ? (
+                <Image src={imagem} alt="Imagem do Cliente" className="w-32 h-32 object-cover mb-5" />
+            ) : (
+                <Image src={URL.createObjectURL(imagem)} alt="Imagem do Cliente" className="w-32 h-32 object-cover mb-5" />
             )}
             <div className="flex justify-end mt-7">
                 <button 
