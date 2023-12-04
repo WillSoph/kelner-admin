@@ -23,7 +23,7 @@ const FoodDetailScreen = () => {
             <Navbar />
             <Back />
             {clientes?.filter(item => item.fields.nome?.stringValue === nome)?.map((cliente) => (
-                <div className="flex flex-col justify-center items-center mt-12">
+                <div className="flex flex-col justify-center items-center mt-12" key={cliente.createTime}>
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-10" key={cliente.createTime}>
 
                         {/* left side  */}
