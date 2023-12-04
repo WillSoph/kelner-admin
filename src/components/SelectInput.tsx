@@ -70,9 +70,9 @@ export default function SelectInput(props: SelectInputProps) {
                             <Image src={selected.avatar} alt="" className="h-5 w-5 flex-shrink-0 rounded-full" />
                             <span className="ml-3 block truncate">{selected.name}</span>
                         </span>
-                        <span className="pointer-events-none absolute inset-y-0 right-0 ml-3 flex items-center pr-2">
+                        {/* <span className="pointer-events-none absolute inset-y-0 right-0 ml-3 flex items-center pr-2">
                             <IconeSetasCimaBaixo className="h-5 w-5 text-gray-400" aria-hidden="true" />
-                        </span>
+                        </span> */}
                         </Listbox.Button>
 
                         <Transition
@@ -112,7 +112,7 @@ export default function SelectInput(props: SelectInputProps) {
                                         'absolute inset-y-0 right-0 flex items-center pr-4'
                                         )}
                                     >
-                                        <IconeCheck className="h-5 w-5" aria-hidden="true" />
+                                        {/* <IconeCheck className="h-5 w-5" aria-hidden="true" /> */}
                                     </span>
                                     ) : null}
                                 </>
