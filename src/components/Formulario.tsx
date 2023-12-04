@@ -107,7 +107,7 @@ export default function Formulario(props: FormularioProps) {
             {imagem && typeof imagem === 'string' ? (
                 <Image src={imagem} alt="Imagem do Cliente" className="w-32 h-32 object-cover mb-5" />
             ) : (
-                <Image src={URL.createObjectURL(imagem)} alt="Imagem do Cliente" className="w-32 h-32 object-cover mb-5" />
+                <div></div>
             )}
             <div className="flex justify-end mt-7">
                 <button 
