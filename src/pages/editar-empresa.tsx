@@ -9,6 +9,7 @@ import useAuth from "../data/hook/useAuth";
 import { useTotalAcessible } from '../data/context/TotalAcessibleContext';
 import Layout from "../components/template/Layout";
 import LayoutConteudo from "../components/template/LayoutConteudo";
+import Image from "next/image";
 
 interface EditarEmpresaProps {
     empresa: Empresa
@@ -106,7 +107,7 @@ export default function Formulario(props: EditarEmpresaProps) {
                         />
                     </div>
                     {empresa?.fields?.imagemUrl?.stringValue && (
-                        <img src={empresa?.fields?.imagemUrl?.stringValue} alt="Imagem do Cliente" className="w-32 h-32 object-cover mb-5" />
+                        <Image src={empresa?.fields?.imagemUrl?.stringValue} alt="Imagem do Cliente" className="w-32 h-32 object-cover mb-5" />
                     )}
                     <div className="flex justify-end mt-7">
                         <button 

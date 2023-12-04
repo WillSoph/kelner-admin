@@ -208,7 +208,7 @@ const Hero = () => {
               <a
                 onClick={handleSubscribe}
                 target="_blank"
-                rel="noopener"
+                rel="noreferrer"
                 className="px-8 py-4 cursor-pointer text-lg font-medium text-center text-white bg-yellow-500 rounded-md"
               >
                 Assine Agora

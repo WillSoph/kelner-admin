@@ -48,7 +48,7 @@ export default function Home() {
   const navegarParaCardapio = () => {
     // Aqui você pode obter o ID do usuário do seu contexto de autenticação ou de onde estiver disponível
     const idUsuario = usuario?.uid; // Substitua isso pelo código real para obter o ID do usuário
-    window.open(`/cardapio/${idUsuario}`, '_blank');
+    window.open(`/cardapio/${idUsuario}`, '_blank', 'noopener,noreferrer');
   };
   const navegarParaEmpresa = () => {
     // Aqui você pode obter o ID do usuário do seu contexto de autenticação ou de onde estiver disponível
@@ -74,34 +74,6 @@ export default function Home() {
 };
 
   const cardapioQRCodeLink = `/cardapio/${usuario?.uid}`;
-
-  // const printQRCode = () => {
-  //   const printContent = document.getElementById('modalContent'); // substitua 'modalContent' pelo ID real do elemento do modal
-  //   const printWindow = window.open('', '_blank');
-  
-  //   if (printWindow && printContent) {
-  //     printWindow.document.open();
-  //     printWindow.document.write(`
-  //       <html>
-  //         <head>
-  //           <title>QRCode</title>
-  //         </head>
-  //         <body style="text-align: center;">
-  //           ${printContent.innerHTML}
-  //           <script type="text/javascript">
-  //             window.onload = function() {
-  //               window.print();
-  //               window.onafterprint = function() {
-  //                 window.close();
-  //               }
-  //             }
-  //           </script>
-  //         </body>
-  //       </html>
-  //     `);
-  //     printWindow.document.close();
-  //   }
-  // };
 
   return (
     <>

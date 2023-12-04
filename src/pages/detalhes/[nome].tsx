@@ -7,6 +7,7 @@ import { withSwal } from 'react-sweetalert2';
 import { useOrder } from '../../contexts/OrderProvider';
 import Back from '../../routes/Back';
 import Navbar from '../cardapio/components/Navbar';
+import Image from 'next/image';
 
 const FoodDetailScreen = () => {
     const [quantity, setQuantity] = useState(1)
@@ -69,7 +70,7 @@ const FoodDetailScreen = () => {
                         </div>
                         {/* right side  */}
                         <div className="order-1 md:order-2 lg:order-2">
-                            <img src={cliente.fields.imagemUrl?.stringValue} className="w-3/4 md:w-3/4 lg:w-full mx-auto" alt="food" />
+                            <Image src={cliente.fields.imagemUrl?.stringValue} className="w-3/4 md:w-3/4 lg:w-full mx-auto" alt="food" />
                         </div>
                     </div>
                 </div>

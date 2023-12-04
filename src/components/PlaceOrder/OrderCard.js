@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import React from 'react';
 import { AiOutlineDelete } from 'react-icons/ai';
 import { useOrder } from '../../contexts/OrderProvider';
@@ -10,7 +11,7 @@ const OrderCard = (props) => {
     return (
         <div className=" rounded-lg p-4 flex space-x-3">
             <div className="flex">
-                <img className="w-24 object-contain" src={props.fields.imagemUrl?.stringValue} alt="" />
+                <Image className="w-24 object-contain" src={props.fields.imagemUrl?.stringValue} alt="" />
             </div>
             <div className="flex flex-col space-y-3 flex-grow">
                 <h5 className="text-base poppins text-gray-700">{props.fields.nome?.stringValue}</h5>

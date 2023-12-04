@@ -36,21 +36,6 @@ export default function Footer() {
             o Kelner é a solução que simplifica a gestão de seu cardápio virtual de 
             maneira rápida e prática.
             </div>
-
-            {/* <div className="mt-5">
-              <a
-                href="https://vercel.com/?utm_source=web3templates&utm_campaign=oss"
-                target="_blank"
-                rel="noopener"
-                className="relative block w-44">
-                <Image
-                  src="/images/vercel.svg"
-                  alt="Powered by Vercel"
-                  width="212"
-                  height="44"
-                />
-              </a>
-            </div> */}
           </div>
 
           <div>
@@ -74,31 +59,17 @@ export default function Footer() {
           <div className="">
             <div>Siga-nos</div>
             <div className="flex mt-5 space-x-5 text-gray-400 dark:text-gray-500">
-              {/* <a
-                href="https://twitter.com/web3templates"
-                target="_blank"
-                rel="noopener">
-                <span className="sr-only">Twitter</span>
-                <Twitter />
-              </a>
-              <a
-                href="https://facebook.com/web3templates"
-                target="_blank"
-                rel="noopener">
-                <span className="sr-only">Facebook</span>
-                <Facebook />
-              </a> */}
               <a
                 href="https://instagram.com/web3templates"
                 target="_blank"
-                rel="noopener">
+                rel="noreferrer">
                 <span className="sr-only">Instagram</span>
                 <Instagram />
               </a>
               <a
                 href="https://linkedin.com/"
                 target="_blank"
-                rel="noopener">
+                rel="noreferrer">
                 <span className="sr-only">Linkedin</span>
                 <Linkedin />
               </a>
@@ -111,7 +82,7 @@ export default function Footer() {
           <a
             href="https://www.linkedin.com/in/wf-desenvolvedor/"
             target="_blank"
-            rel="noopener">
+            rel="noreferrer">
             Will Dev.
           </a>
         </div>

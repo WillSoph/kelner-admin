@@ -5,6 +5,7 @@ import Entrada from "./Entrada";
 import SelectInput from "./SelectInput";
 import { uploadImagem } from "../core/UploadImagem"
 import { FaSpinner } from "react-icons/fa";
+import Image from "next/image";
 
 interface FormularioProps {
     cliente: Cliente
@@ -101,7 +102,7 @@ export default function Formulario(props: FormularioProps) {
                 />
             </div>
             {props.cliente.imagemUrl && (
-                <img src={props.cliente.imagemUrl} alt="Imagem do Cliente" className="w-32 h-32 object-cover mb-5" />
+                <Image src={props.cliente.imagemUrl} alt="Imagem do Cliente" className="w-32 h-32 object-cover mb-5" />
             )}
             <div className="flex justify-end mt-7">
                 <button 
